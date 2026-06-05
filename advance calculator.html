@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Advance Calculator</title>
+     <link rel="stylesheet" href="advance.css">
+
+</head>
+<body>
+ <a id="one" href="index.html">home</a>
+    <button class="theme-btn" onclick="toggleTheme()">🌓 Change Theme</button>
+
+    <div class="calculator">
+        <input type="text" id="screen" readonly placeholder="0">
+        
+        <div class="buttons">
+            <button class="scientific" onclick="scientific('sin')">sin</button>
+            <button class="scientific" onclick="scientific('cos')">cos</button>
+            <button class="scientific" onclick="scientific('tan')">tan</button>
+            <button class="scientific" onclick="scientific('sqrt')">√</button>
+
+            <button class="clear" onclick="clearScreen()">C</button>
+            <button class="clear" style="background-color: #d32f2f;" onclick="backspace()">DEL</button>
+            <button class="scientific" onclick="scientific('sq')">x²</button>
+            <button onclick="press('/')" class="operator">/</button>
+            
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="press('*')" class="operator">*</button>
+            
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="press('-')" class="operator">-</button>
+            
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('+')" class="operator">+</button>
+            
+            <button onclick="press('0')" style="grid-column: span 2;">0</button>
+            <button onclick="press('.')">.</button>
+            <button class="equal" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let screen = document.getElementById('screen');
+
+        // 1. Screen input function
+        function press(value) {
+            screen.value += value;
+        }
+
+        function clearScreen() {
+            screen.value = '';
+        }
+
+        function backspace() {
+            screen.value = screen.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                if (screen.value !== "") {
+                    screen.value = eval(screen.value);
+                }
+            } catch (error) {
+                screen.value = 'Error';
+            }
+        }
+
+        // 2. Advanced Scientific Functions
+        function scientific(type) {
+            try {
+                let currentVal = parseFloat(screen.value);
+                if (isNaN(currentVal)) return;
+
+                if (type === 'sin') screen.value = Math.sin(currentVal * Math.PI / 180).toFixed(4);
+                else if (type === 'cos') screen.value = Math.cos(currentVal * Math.PI / 180).toFixed(4);
+                else if (type === 'tan') screen.value = Math.tan(currentVal * Math.PI / 180).toFixed(4);
+                else if (type === 'sqrt') screen.value = Math.sqrt(currentVal);
+                else if (type === 'sq') screen.value = Math.pow(currentVal, 2);
+            } catch (e) {
+                screen.value = 'Error';
+            }
+        }
+
+        // 3. KEYBOARD SUPPORT (कीबोर्ड से टाइप करने के लिए)
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            if (!isNaN(key) || key === '.') {
+                press(key);
+            } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+                press(key);
+            } else if (key === 'Enter' || key === '=') {
+                event.preventDefault(); // Default submit रोकने के लिए
+                calculate();
+            } else if (key === 'Backspace') {
+                backspace();
+            } else if (key === 'Escape') {
+                clearScreen();
+            }
+        });
+
+        // 4. LIGHT/DARK THEME TOGGLE
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+        }
+    </script>
+
+</body>
+</html>

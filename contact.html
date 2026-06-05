@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <link rel="stylesheet" href="contact-style.css">
+</head>
+<body>
+    <div id="nav">
+        <a id="logo" href="#"> &#10084;&#65039[DJ] deepansh jha&#10084;&#65039 </a>
+        <div class="nav-links">
+            <a id="one" href="index.html">home</a>
+            <a id="two" href="about.html">about</a>
+            <a id="three" href="skill.html">skill</a>
+            <a id="four" href="project.html">project</a>
+            <a id="five">contact</a>
+        </div>
+    </div>
+    <hr>
+   
+    
+
+    <section id="contact-page">
+        <div class="contact-header">
+            <h2>Get In Touch</h2>
+            <p>Aap mujhse niche diye gaye form ya social links ke zariye jud sakte hain.</p>
+        </div>
+
+        <div class="contact-container">
+            <form class="contact-form" id="main-contact-form">
+                <div class="input-group">
+                    <label>Your Naam</label>
+                    <input type="text" placeholder="Enter your name" required>
+                </div>
+                <div class="input-group">
+                    <label>Your Email</label>
+                    <input type="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label>Message</label>
+                    <textarea placeholder="Write your message here..." rows="5" required></textarea>
+                </div>
+                <button type="submit" class="send-btn">Send Message</button>
+            </form>
+
+            <div class="contact-info">
+                <h3>Direct Connect</h3>
+                <div class="info-item">
+                    <span>📍</span> <strong>Location:</strong> 
+                </div>
+                <div class="info-item">
+                    <span>📧</span> <strong>Email:</strong> deepanshj207@gmail.com
+                </div>
+                
+                <div class="social-links-grid">
+                    <a href="https://wa.me/yournumber" class="social-card whatsapp">WhatsApp</a>
+                    <a href="#" class="social-card linkedin">LinkedIn</a>
+                    <a href="#" class="social-card upwork">Upwork Profile</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('main-contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert("Dhanyawad! Aapka message mil gaya hai.");
+            this.reset();
+        });
+    </script>
+
+
+
+    
+</body>
+</html>

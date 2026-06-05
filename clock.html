@@ -1,0 +1,244 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Smart Dashboard Clock with All Numbers</title>
+    <style>
+        /* CSS: Futuristic Dashboard Theme */
+        body {
+            background: radial-gradient(circle, #101525, #070913);
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .dashboard {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 350px;
+            text-align: center;
+        }
+
+        /* Modern Dial Styling */
+        .clock {
+            width: 220px;
+            height: 220px;
+            background: #0d111d;
+            border: 4px solid #00f2fe;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+            margin-bottom: 25px;
+        }
+
+        .clock::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #4facfe;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        /* --- 12 NUMBER POSITIONING LOGIC --- */
+        .number {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #a0aec0;
+            padding: 8px;
+            box-sizing: border-box;
+            /* हर नंबर को सेंटर से घुमाने के लिए */
+            transform-origin: center; 
+        }
+
+        /* हर नंबर को 30 डिग्री के गैप पर घुमाना (12 * 30 = 360 डिग्री) */
+        .n1 { transform: rotate(30deg); }
+        .n2 { transform: rotate(60deg); }
+        .n3 { transform: rotate(90deg); }
+        .n4 { transform: rotate(120deg); }
+        .n5 { transform: rotate(150deg); }
+        .n6 { transform: rotate(180deg); }
+        .n7 { transform: rotate(210deg); }
+        .n8 { transform: rotate(240deg); }
+        .n9 { transform: rotate(270deg); }
+        .n10 { transform: rotate(300deg); }
+        .n11 { transform: rotate(330deg); }
+        .n12 { transform: rotate(0deg); }
+
+        /* नंबर के टेक्स्ट को वापस सीधा करने के लिए ताकि वो उल्टे न दिखें */
+        .number span {
+            display: inline-block;
+        }
+        .n1 span { transform: rotate(-30deg); }
+        .n2 span { transform: rotate(-60deg); }
+        .n3 span { transform: rotate(-90deg); }
+        .n4 span { transform: rotate(-120deg); }
+        .n5 span { transform: rotate(-150deg); }
+        .n6 span { transform: rotate(-180deg); }
+        .n7 span { transform: rotate(-210deg); }
+        .n8 span { transform: rotate(-240deg); }
+        .n9 span { transform: rotate(-270deg); }
+        .n10 span { transform: rotate(-300deg); }
+        .n11 span { transform: rotate(-330deg); }
+
+        /* मुख्य नंबरों को हाईलाइट करने के लिए */
+        .n12, .n3, .n6, .n9 { color: #00f2fe; font-size: 18px; }
+
+        /* Hands Styling */
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            border-radius: 5px;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        .hour { width: 6px; height: 50px; background: #fff; z-index: 3; }
+        .minute { width: 4px; height: 75px; background: #00f2fe; z-index: 4; }
+        .second { width: 2px; height: 85px; background: #ff2a5f; z-index: 5; }
+
+        /* Widgets */
+        .digital-time {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #00f2fe;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .date-info {
+            font-size: 16px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .weather-widget {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .temp-display { font-size: 28px; font-weight: 600; color: #ff9500; }
+        .weather-status { font-size: 14px; color: #cbd5e0; }
+    </style>
+</head>
+<body>
+ <a id="one" href="index.html">home</a>
+    <div class="dashboard">
+        <div class="clock">
+            <div class="number n1"><span>1</span></div>
+            <div class="number n2"><span>2</span></div>
+            <div class="number n3"><span>3</span></div>
+            <div class="number n4"><span>4</span></div>
+            <div class="number n5"><span>5</span></div>
+            <div class="number n6"><span>6</span></div>
+            <div class="number n7"><span>7</span></div>
+            <div class="number n8"><span>8</span></div>
+            <div class="number n9"><span>9</span></div>
+            <div class="number n10"><span>10</span></div>
+            <div class="number n11"><span>11</span></div>
+            <div class="number n12"><span>12</span></div>
+
+            <div class="hand hour" id="hourHand"></div>
+            <div class="hand minute" id="minuteHand"></div>
+            <div class="hand second" id="secondHand"></div>
+        </div>
+
+        <div class="digital-time" id="digitalTime">00:00:00 PM</div>
+        <div class="date-info" id="dateInfo">Loading Date...</div>
+
+        <div class="weather-widget">
+            <div>
+                <div class="temp-display" id="temp">--°C</div>
+                <div class="weather-status" id="status">Fetching Weather...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hourHand = document.getElementById('hourHand');
+        const minuteHand = document.getElementById('minuteHand');
+        const secondHand = document.getElementById('secondHand');
+        const digitalTime = document.getElementById('digitalTime');
+        const dateInfo = document.getElementById('dateInfo');
+
+        function updateClock() {
+            const now = new Date();
+            const seconds = now.getSeconds();
+            const minutes = now.getMinutes();
+            const hours = now.getHours();
+
+            const secDeg = seconds * 6;
+            const minDeg = (minutes * 6) + (seconds * 0.1);
+            const hrDeg = (hours * 30) + (minutes * 0.5);
+
+            secondHand.style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
+            minuteHand.style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
+            hourHand.style.transform = `translateX(-50%) rotate(${hrDeg}deg)`;
+
+            digitalTime.innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateInfo.innerText = now.toLocaleDateString('en-US', options);
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        async function fetchWeather() {
+            try {
+                const url = "https://api.open-meteo.com/v1/forecast?latitude=26.8467&longitude=80.9462&current_weather=true";
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                const currentTemp = data.current_weather.temperature;
+                const weatherCode = data.current_weather.weathercode;
+
+                document.getElementById('temp').innerText = `${currentTemp}°C`;
+
+                let weatherStatus = "Clear Sky";
+                if (weatherCode >= 1 && weatherCode <= 3) weatherStatus = "Partly Cloudy";
+                else if (weatherCode >= 45 && weatherCode <= 48) weatherStatus = "Foggy";
+                else if (weatherCode >= 51 && weatherCode <= 67) weatherStatus = "Rainy 🌧️";
+                else if (weatherCode >= 80) weatherStatus = "Thunderstorm ⛈️";
+
+                document.getElementById('status').innerText = weatherStatus;
+            } catch (error) {
+                document.getElementById('temp').innerText = "27°C";
+                document.getElementById('status').innerText = "Normal Mode";
+            }
+        }
+
+        fetchWeather();
+        setInterval(fetchWeather, 15 * 60 * 1000);
+    </script>
+</body>
+</html>
+

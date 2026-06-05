@@ -1,0 +1,125 @@
+*{
+   background-color: #c0f5da;
+   color: black;
+   font-family: cursive;
+
+ }
+ @keyframes glow-pulse {
+    0% { box-shadow: 0 0 20px #2ecc71, 0 0 40px rgba(46, 204, 113, 0.2); }
+    50% { box-shadow: 0 0 30px #2ecc71, 0 0 90px rgba(46, 204, 113, 0.5); }
+    100% { box-shadow: 0 0 20px #2ecc71, 0 0 40px rgba(46, 204, 113, 0.2); }
+}
+
+hr {
+    animation: glow-pulse 3s infinite ease-in-out;
+}
+ 
+ hr{
+  height: 4px;
+  background-color: #2ecc71;
+  border: none;
+  box-shadow: 0 0 10px #2ecc71, 0 0 25px #2ecc71, 0 0 45px rgba(46, 204, 113, 0.6);
+  border-radius: 10px;
+  width: 90%;
+  margin: 30px auto;
+ }
+
+ #one:hover,#two:hover,#three:hover,#four:hover, #five:hover{
+    
+    color:#eb5003;
+    border-radius: 10px;
+    transition: 0.5s;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba( 46, 204, 113, 0.4);
+  transform: scale(1.4);
+  transition: 0.3s;
+ }
+
+ #nav{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+padding-right: 40px;
+padding: 25px 50px;
+
+position: relative;
+border-radius: 8px;
+ }
+   #logo{
+      text-decoration: none;
+   text-transform: uppercase;
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    padding-left: 20px;
+    margin-top: 20px;
+    transition: 0.3s;
+
+ }
+ #logo:hover{
+  transform: scale(1.05);
+ }
+ 
+
+ #one,#two,#three,#four,#five{
+    text-decoration: none;
+    color: black;
+    padding:0  10px 0 ;
+    font-size: 18px;
+    font-weight: lighter;
+    margin-top: 50px;
+    
+ }
+ .nav-links{
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      gap:30px;
+      padding-right: 100px;
+text-transform: capitalize;
+ }
+ 
+ .skills-container{/*about me */
+  display: flex;
+  flex-wrap: wrap;
+  width: 350px;
+  justify-content:flex-start;
+  margin: 0 ;
+  gap: 20px;
+  padding: 20px;
+ }
+ .skill-box{
+   width: 150px;
+   height: 150px;
+   border: 5px solid #2ecc71;
+   border-radius: 12px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   background-color: #f0fdfa;
+
+ }
+ .skill-box img{/*about me */
+   width: 50px;
+   height: auto;
+   margin-bottom: 10px;
+ }
+ .skill-box span{/*about me section*/
+   font-size: 14px;
+   font-weight: bold;
+   color:#333;
+   text-transform: unset;
+ }a{
+  text-decoration: none;
+  background-color: #26e699;
+  color: #000000;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  
+ }
+ 

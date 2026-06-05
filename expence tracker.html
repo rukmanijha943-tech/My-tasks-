@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Finance Tracker</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --income: #10b981;
+            --expense: #ef4444;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .app-container {
+            background: var(--card);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+        /* Dashboard Overview Grid */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .main-balance {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .main-balance h3 { margin: 0; font-size: 14px; opacity: 0.8; text-transform: uppercase; }
+        .main-balance p { margin: 5px 0 0 0; font-size: 32px; font-weight: bold; }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border-bottom: 4px solid #ccc;
+        }
+
+        .stat-card.inc { border-color: var(--income); }
+        .stat-card.exp { border-color: var(--expense); }
+        .stat-card h4 { margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase; }
+        .stat-card p { margin: 5px 0 0 0; font-size: 18px; font-weight: bold; }
+        .stat-card.inc p { color: var(--income); }
+        .stat-card.exp p { color: var(--expense); }
+
+        /* Form Styling */
+        form {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group.full-width {
+            grid-column: span 2;
+            margin-bottom: 12px;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #4b5563;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover { opacity: 0.9; }
+
+        /* History List */
+        .history-section h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #374151;
+        }
+
+        .list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .list li {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+
+        .list li:hover { transform: translateX(2px); }
+        .list li.income-item { border-left: 5px solid var(--income); }
+        .list li.expense-item { border-left: 5px solid var(--expense); }
+
+        .item-details { display: flex; flex-direction: column; }
+        .item-title { font-weight: 600; }
+        .item-cat { font-size: 11px; color: #9ca3af; text-transform: uppercase; margin-top: 2px; }
+
+        .item-right { display: flex; align-items: center; gap: 12px; }
+        .item-amount { font-weight: bold; }
+        .income-item .item-amount { color: var(--income); }
+        .expense-item .item-amount { color: var(--expense); }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: var(--expense);
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .delete-btn:hover { background: #fca5a5; }
+    </style>
+</head>
+<body>
+ <a id="one" href="index.html">home</a>
+    <div class="app-container">
+        <h2>Advanced Finance Manager</h2>
+
+        <!-- Dashboard Analytics -->
+        <div class="dashboard">
+            <div class="main-balance">
+                <h3>Net Balance</h3>
+                <p id="net-balance">₹0.00</p>
+            </div>
+            <div class="stats-row">
+                <div class="stat-card inc">
+                    <h4>Total Income</h4>
+                    <p id="total-income">₹0.00</p>
+                </div>
+                <div class="stat-card exp">
+                    <h4>Total Expenses</h4>
+                    <p id="total-expense">₹0.00</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Transaction Form -->
+        <form id="transaction-form">
+            <div class="input-group full-width">
+                <label for="text">Description</label>
+                <input type="text" id="text" placeholder="e.g., Salary, Market, Room Rent" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="type">Type</label>
+                    <select id="type">
+                        <option value="income">Income (+)</option>
+                        <option value="expense" selected>Expense (-)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        <option value="Salary">Salary</option>
+                        <option value="Food">Food / Chai</option>
+                        <option value="Bills">Bills / Recharge</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group full-width">
+                <label for="amount">Amount (₹)</label>
+                <input type="number" id="amount" placeholder="Enter amount..." required>
+            </div>
+
+            <button type="submit" class="submit-btn">Add Transaction</button>
+        </form>
+
+        <!-- History Log -->
+        <div class="history-section">
+            <h3>Transaction History</h3>
+            <ul id="list" class="list">
+                <!-- Transactions dynamically loaded here -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Advanced Logic Script -->
+    <script>
+        const balanceDisplay = document.getElementById('net-balance');
+        const incomeDisplay = document.getElementById('total-income');
+        const expenseDisplay = document.getElementById('total-expense');
+        const form = document.getElementById('transaction-form');
+        const textInput = document.getElementById('text');
+        const amountInput = document.getElementById('amount');
+        const typeInput = document.getElementById('type');
+        const categoryInput = document.getElementById('category');
+        const listContainer = document.getElementById('list');
+
+        // LOCAL STORAGE LAYER: Pehle se save data load karein ya khali array rkhein
+        let transactions = localStorage.getItem('transactions') !== null 
+            ? JSON.parse(localStorage.getItem('transactions')) 
+            : [];
+
+        // Calculations & UI Refresh
+        function updateDashboard() {
+            // 1. Alag alag filter karein array me se
+            const amounts = transactions.map(t => t.type === 'income' ? t.amount : -t.amount);
+            
+            const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+            
+            const income = transactions
+                .filter(t => t.type === 'income')
+                .reduce((acc, t) => (acc += t.amount), 0).toFixed(2);
+
+            const expense = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((acc, t) => (acc += t.amount), 0).toFixed(2);
+
+            // 2. Screen Par Print Karein
+            balanceDisplay.innerText = `₹${total}`;
+            incomeDisplay.innerText = `₹${income}`;
+            expenseDisplay.innerText = `₹${expense}`;
+            
+            // Color feedback for net balance
+            if(total < 0) {
+                balanceDisplay.style.color = '#ef4444';
+            } else if(total > 0) {
+                balanceDisplay.style.color = '#10b981';
+            } else {
+                balanceDisplay.style.color = 'white';
+            }
+        }
+
+        // List item ko render karne ka function
+        function renderDOM(transaction) {
+            const li = document.createElement('li');
+            const sign = transaction.type === 'income' ? '+' : '-';
+            
+            li.classList.add(transaction.type === 'income' ? 'income-item' : 'expense-item');
+
+            li.innerHTML = `
+                <div class="item-details">
+                    <span class="item-title">${transaction.text}</span>
+                    <span class="item-cat">${transaction.category}</span>
+                </div>
+                <div class="item-right">
+                    <span class="item-amount">${sign}₹${transaction.amount}</span>
+                    <button class="delete-btn" onclick="removeTransaction(${transaction.id})">Delete</button>
+                </div>
+            `;
+
+            listContainer.appendChild(li);
+        }
+
+        // Data add karne ka logic
+        function addTransaction(e) {
+            e.preventDefault();
+
+            const transaction = {
+                id: Date.now(), // Unique ID generation
+                text: textInput.value,
+                type: typeInput.value,
+                category: categoryInput.value,
+                amount: parseFloat(amountInput.value)
+            };
+
+            transactions.push(transaction);
+            updateLocalStorage();
+            init();
+
+            // Clear Form
+            textInput.value = '';
+            amountInput.value = '';
+        }
+
+        // Transaction Delete karne ka function
+        function removeTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            updateLocalStorage();
+            init();
+        }
+
+        // Local Storage sync function
+        function updateLocalStorage() {
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        // App Initialization
+        function init() {
+            listContainer.innerHTML = '';
+            transactions.forEach(renderDOM);
+            updateDashboard();
+        }
+
+        // Event Listener & Run
+        form.addEventListener('submit', addTransaction);
+        init();
+    </script>
+</body>
+</html>

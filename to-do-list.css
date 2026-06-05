@@ -1,0 +1,152 @@
+ /* CSS: Premium UI Design */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .todo-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            width: 420px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #4cd964;
+        }
+
+        /* Progress Bar Styling */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        #progressBar {
+            background: linear-gradient(90deg, #4cd964, #5ac8fa);
+            width: 0%;
+            height: 100%;
+            transition: width 0.4s ease;
+        }
+        .stats-text {
+            font-size: 12px;
+            text-align: right;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+
+        /* Input Controls */
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        #taskInput {
+            flex: 2;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+        }
+        #taskInput::placeholder { color: #ccc; }
+        
+        #prioritySelect {
+            flex: 1;
+            padding: 12px;
+            background: #203a43;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+            cursor: pointer;
+        }
+
+        #addBtn {
+            padding: 12px 20px;
+            background: #4cd964;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        #addBtn:hover { background: #3cc453; transform: translateY(-2px); }
+
+        /* Filter Buttons */
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 5px;
+            border-radius: 8px;
+        }
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        /* Task List Management */
+        ul { list-style: none; padding: 0; margin: 0; }
+        li {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+            border-left: 5px solid #fff;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Priority Border Colors */
+        .p-high { border-left-color: #ff3b30; }
+        .p-medium { border-left-color: #ff9500; }
+        .p-low { border-left-color: #5ac8fa; }
+
+        .task-text { flex: 1; margin-left: 10px; cursor: pointer; transition: 0.2s; }
+        .completed .task-text { text-decoration: line-through; color: #777; }
+        
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #ff3b30;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .delete-btn:hover { transform: scale(1.2); }

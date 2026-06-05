@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Pro To-Do List</title>
+    <link rel="stylesheet" href="to-do-list.css">
+</head>
+<body>
+ <a id="one" href="index.html">home</a>
+    <div class="todo-card">
+        <h2>Workspace Tasks</h2>
+        
+        <div class="progress-container"><div id="progressBar"></div></div>
+        <div class="stats-text" id="statsText">0% Completed</div>
+
+        <div class="input-row">
+            <input type="text" id="taskInput" placeholder="Write a professional goal...">
+            <select id="prioritySelect">
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+            </select>
+            <button id="addBtn" onclick="addTask()">Add</button>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTasks('all', this)">All</button>
+            <button class="filter-btn" onclick="filterTasks('pending', this)">Pending</button>
+            <button class="filter-btn" onclick="filterTasks('completed', this)">Completed</button>
+        </div>
+
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        let tasks = localStorage.getItem('pro_todos') ? JSON.parse(localStorage.getItem('pro_todos')) : [];
+        let currentFilter = 'all';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTasks();
+        });
+
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const priority = document.getElementById('prioritySelect').value;
+            const text = input.value.trim();
+
+            if (text === "") return;
+
+            tasks.push({
+                id: Date.now(),
+                text: text,
+                priority: priority,
+                completed: false
+            });
+
+            input.value = "";
+            saveAndRender();
+        }
+
+        // Enter key setup
+        document.getElementById('taskInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addTask();
+        });
+
+        function toggleTask(id) {
+            tasks = tasks.map(task => task.id === id ? { ...task, completed: !task.completed } : task);
+            saveAndRender();
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(task => task.id !== id);
+            saveAndRender();
+        }
+
+        function filterTasks(type, btnElement) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            renderTasks();
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('pro_todos', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = "";
+
+            let filteredTasks = tasks.filter(task => {
+                if (currentFilter === 'pending') return !task.completed;
+                if (currentFilter === 'completed') return task.completed;
+                return true;
+            });
+
+            filteredTasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `p-${task.priority} ${task.completed ? 'completed' : ''}`;
+
+                li.innerHTML = `
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${task.id})">
+                    <span class="task-text" onclick="toggleTask(${task.id})">${task.text}</span>
+                    <button class="delete-btn" onclick="deleteTask(${task.id})">×</button>
+                `;
+                list.appendChild(li);
+            });
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('statsText').innerText = `${percentage}% Completed (${completed}/${total} tasks)`;
+        }
+    </script>
+</body>
+</html>

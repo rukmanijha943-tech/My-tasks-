@@ -1,0 +1,116 @@
+advance calculator css
+#one{
+     text-decoration: none;
+    color: black;
+    padding:0  10px 0 ;
+    font-size: 18px;
+    font-weight: lighter;
+    margin-top: 50px;
+   }
+ :root {
+            --bg-color: #f0f2f5;
+            --calc-bg: #222222;
+            --screen-bg: #ffffff;
+            --screen-text: #000000;
+            --btn-num: #3a3a3a;
+            --btn-text: #ffffff;
+        }
+
+        /* Dark Mode Toggle classes */
+        .light-theme {
+            --bg-color: #222222;
+            --calc-bg: #ffffff;
+            --screen-bg: #eaeaea;
+            --screen-text: #000000;
+            --btn-num: #e0e0e0;
+            --btn-text: #000000;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            transition: 0.3s;
+        }
+
+        .theme-btn {
+            margin-bottom: 15px;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 20px;
+            border: 1px solid #555;
+            background: #333;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .calculator {
+            background-color: var(--calc-bg);
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.4);
+            width: 320px;
+            transition: 0.3s;
+        }
+
+        #screen {
+            width: 100%;
+            height: 65px;
+            background-color: var(--screen-bg);
+            color: var(--screen-text);
+            font-size: 28px;
+            text-align: right;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        button {
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--btn-num);
+            color: var(--btn-text);
+            transition: 0.1s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .operator {
+            background-color: #ff9500;
+            color: white;
+        }
+
+        .scientific {
+            background-color: #555555;
+            color: #4cd964;
+            font-size: 16px;
+        }
+
+        .clear {
+            background-color: #ff3b30;
+            color: white;
+        }
+
+        .equal {
+            background-color: #4cd964;
+            color: white;
+        }

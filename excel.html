@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Data Sheet Pro</title>
+    <style>
+        :root {
+            --excel-green: #107c41;
+            --excel-dark: #0a4d28;
+            --bg-gray: #f8fafc;
+            --border-color: #cbd5e1;
+            --text-main: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 24px;
+            color: var(--text-main);
+        }
+
+        .app-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Top Bar Layout */
+        .header-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--excel-green);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .header-panel h2 {
+            margin: 0;
+            color: var(--excel-green);
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        /* Stats Blocks (Excel Formula style) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-gray);
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 { margin: 0; font-size: 13px; color: #64748b; text-transform: uppercase; }
+        .stat-card p { margin: 8px 0 0 0; font-size: 24px; font-weight: 700; color: #1e293b; }
+
+        /* Search & Filter Controls */
+        .controls-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-box:focus { border-color: var(--excel-green); }
+
+        /* Advanced Grid Entry Form */
+        .entry-grid-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-wrapper label { font-size: 13px; font-weight: 600; color: #475569; }
+        
+        .input-wrapper input, .input-wrapper select {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+        }
+
+        .input-wrapper input:focus { border-color: var(--excel-green); }
+
+        /* Buttons Styling */
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add { background: var(--excel-green); color: white; margin-top: auto; height: 42px; }
+        .btn-add:hover { background: var(--excel-dark); }
+        .btn-export { background: #2563eb; color: white; display: flex; align-items: center; gap: 8px; }
+        .btn-export:hover { background: #1d4ed8; }
+
+        /* Excel Sheet Table Grid */
+        .sheet-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: white;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        tbody tr:nth-child(even) { background-color: #f8fafc; }
+        tbody tr:hover { background-color: #f0fdf4; }
+
+        /* Action badgets and tags */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        .badge.completed { background: #dcfce7; color: #16a34a; }
+        .badge.pending { background: #fef9c3; color: #ca8a04; }
+
+        .action-cell { display: flex; gap: 8px; }
+        .btn-edit { background: #e2e8f0; color: #334155; padding: 4px 8px; font-size: 12px; }
+        .btn-edit:hover { background: #cbd5e1; }
+        .btn-delete { background: #fee2e2; color: #ef4444; padding: 4px 8px; font-size: 12px; }
+        .btn-delete:hover { background: #fca5a5; }
+
+        .no-records { text-align: center; padding: 30px; color: #94a3b8; font-style: italic; }
+    </style>
+</head>
+<body>
+     <a id="one" href="index.html">home</a>
+
+    <div class="app-container">
+        <div class="header-panel">
+            <h2>📊 Enterprise Data Sheet Pro</h2>
+            <button class="btn-export" id="btn-export">📥 Export Clean CSV</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Rows</h3>
+                <p id="stat-total">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed Tasks</h3>
+                <p id="stat-completed" style="color: #16a34a;">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Pending Tasks</h3>
+                <p id="stat-pending" style="color: #ca8a04;">0</p>
+            </div>
+        </div>
+
+        <div class="controls-row">
+            <input type="text" id="search-bar" class="search-box" placeholder="🔍 Type here to search records instantly by Name or ID...">
+        </div>
+
+        <form id="sheet-form" class="entry-grid-form">
+            <input type="hidden" id="editing-index" value="-1"> <div class="input-wrapper">
+                <label for="row-id">ID / Code</label>
+                <input type="text" id="row-id" placeholder="e.g., DE-89" required>
+            </div>
+            <div class="input-wrapper">
+                <label for="row-name">Client / Staff Name</label>
+                <input type="text" id="row-name" placeholder="e.g., Harsh Jha" required>
+            </div>
+            <div class="input-wrapper">
+                <label for="row-type">Department</label>
+                <select id="row-type">
+                    <option value="Data Operations">Data Operations</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Content Auditing">Content Auditing</option>
+                    <option value="Logistics">Logistics</option>
+                </select>
+            </div>
+            <div class="input-wrapper">
+                <label for="row-status">Status</label>
+                <select id="row-status">
+                    <option value="Completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-add" id="btn-submit-text">+ Add Row</button>
+        </form>
+
+        <div class="sheet-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">System ID</th>
+                        <th style="width: 35%;">Name</th>
+                        <th style="width: 25%;">Department</th>
+                        <th style="width: 15%;">Status</th>
+                        <th style="width: 10%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="sheet-tbody">
+                    </tbody>
+            </table>
+            <div id="empty-msg" class="no-records">No data rows found in local cache.</div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('sheet-form');
+        const idInput = document.getElementById('row-id');
+        const nameInput = document.getElementById('row-name');
+        const typeInput = document.getElementById('row-type');
+        const statusInput = document.getElementById('row-status');
+        const submitBtnText = document.getElementById('btn-submit-text');
+        const editingIndexInput = document.getElementById('editing-index');
+        
+        const tbody = document.getElementById('sheet-tbody');
+        const emptyMsg = document.getElementById('empty-msg');
+        const searchBar = document.getElementById('search-bar');
+        const exportBtn = document.getElementById('btn-export');
+
+        // Stats elements
+        const statTotal = document.getElementById('stat-total');
+        const statCompleted = document.getElementById('stat-completed');
+        const statPending = document.getElementById('stat-pending');
+
+        // Central Array Initialization (LocalStorage Sync)
+        let mainData = localStorage.getItem('advancedSheetData')
+            ? JSON.parse(localStorage.getItem('advancedSheetData'))
+            : [];
+
+        // ADVANCED FEATURE 1: Comprehensive Formula/Analytics Engine
+        function runSheetFormulas() {
+            const total = mainData.length;
+            const completed = mainData.filter(r => r.status === 'Completed').length;
+            const pending = mainData.filter(r => r.status === 'Pending').length;
+
+            statTotal.innerText = total;
+            statCompleted.innerText = completed;
+            statPending.innerText = pending;
+        }
+
+        // ADVANCED FEATURE 2: Dynamic Live Search Engine
+        searchBar.addEventListener('input', function(e) {
+            const keyword = e.target.value.toLowerCase().trim();
+            renderGrid(keyword);
+        });
+
+        // Core Render Grid Engine
+        function renderGrid(filterKeyword = "") {
+            tbody.innerHTML = '';
+            
+            // Filter logic
+            const targetData = mainData.filter(item => {
+                return item.id.toLowerCase().includes(filterKeyword) || 
+                       item.name.toLowerCase().includes(filterKeyword) ||
+                       item.type.toLowerCase().includes(filterKeyword);
+            });
+
+            if(targetData.length === 0) {
+                emptyMsg.style.display = 'block';
+                runSheetFormulas();
+                return;
+            }
+            emptyMsg.style.display = 'none';
+
+            targetData.forEach((row) => {
+                // Find actual index in global array for data safety during edit/delete
+                const actualIndex = mainData.findIndex(item => item.globalId === row.globalId);
+                
+                const tr = document.createElement('tr');
+                const statusClass = row.status === 'Completed' ? 'completed' : 'pending';
+
+                tr.innerHTML = `
+                    <td><code>${row.id}</code></td>
+                    <td><strong>${row.name}</strong></td>
+                    <td>${row.type}</td>
+                    <td><span class="badge ${statusClass}">${row.status}</span></td>
+                    <td class="action-cell">
+                        <button class="btn-edit" onclick="startEditRow(${actualIndex})">Edit</button>
+                        <button class="btn-delete" onclick="deleteRow(${actualIndex})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            runSheetFormulas();
+        }
+
+        // Form Submit Handler (Dual Layer: Adds OR Updates)
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const editingIdx = parseInt(editingIndexInput.value);
+
+            const rowData = {
+                globalId: editingIdx === -1 ? Date.now() : mainData[editingIdx].globalId,
+                id: idInput.value,
+                name: nameInput.value,
+                type: typeInput.value,
+                status: statusInput.value
+            };
+
+            if(editingIdx === -1) {
+                // Mode: Add New Row
+                mainData.push(rowData);
+            } else {
+                // ADVANCED FEATURE 3: Mode: Live In-place Update
+                mainData[editingIdx] = rowData;
+                editingIndexInput.value = "-1";
+                submitBtnText.innerText = "+ Add Row";
+                submitBtnText.style.background = "var(--excel-green)";
+            }
+
+            saveAndRefresh();
+            form.reset();
+        });
+
+        // ADVANCED FEATURE 3 (Cont...): Setup Inputs for Edit Mode
+        function startEditRow(index) {
+            const target = mainData[index];
+            
+            idInput.value = target.id;
+            nameInput.value = target.name;
+            typeInput.value = target.type;
+            statusInput.value = target.status;
+
+            editingIndexInput.value = index;
+            submitBtnText.innerText = "💾 Update Row";
+            submitBtnText.style.background = "#2563eb";
+            
+            idInput.focus();
+        }
+
+        // Delete Row Logic
+        function deleteRow(index) {
+            if(confirm("Kya aap sach me is row data ko permanent delete karna chahte hain?")) {
+                mainData.splice(index, 1);
+                saveAndRefresh();
+                form.reset();
+                editingIndexInput.value = "-1";
+                submitBtnText.innerText = "+ Add Row";
+                submitBtnText.style.background = "var(--excel-green)";
+            }
+        }
+
+        // Global Sync State
+        function saveAndRefresh() {
+            localStorage.setItem('advancedSheetData', JSON.stringify(mainData));
+            searchBar.value = ""; // Reset search view
+            renderGrid();
+        }
+
+        // ADVANCED FEATURE 4: Production Level Clean CSV Export Engine
+        exportBtn.addEventListener('click', function() {
+            if(mainData.length === 0) {
+                alert("Sheet me koi data nahi hai export karne ke liye!");
+                return;
+            }
+
+            let csvRows = [];
+            // Headers
+            csvRows.push(["System ID", "Client Name", "Department", "Status Layout"].join(','));
+
+            // Sanitize string entries to handle commas safely inside names
+            mainData.forEach(row => {
+                const sanitizedName = `"${row.name.replace(/"/g, '""')}"`; 
+                const dataLine = [row.id, sanitizedName, row.type, row.status];
+                csvRows.push(dataLine.join(','));
+            });
+
+            const csvString = csvRows.join('\n');
+            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "Enterprise_Data_Pro_2026.csv");
+            document.body.appendChild(link);
+            
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Initialize App Dashboard
+        renderGrid();
+    </script>
+</body>
+</html>
